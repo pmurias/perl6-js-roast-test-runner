@@ -2,11 +2,6 @@ const express = require('express');
 const app = express();
 const port = 3000;
 
-app.get('/', (req, res) => {
-  console.log('got response');
-  res.send('Hello World');
-});
-
 app.use(express.static('static'));
 app.use(express.static('tests'));
 
@@ -22,13 +17,8 @@ const puppeteer = require('puppeteer');
     return new Promise(function(resolve, reject) {
       (async () => {
         try {
-          page.on('error', error => {
-            reject(error);
-          });
-
-          page.on('pageerror', error => {
-            reject(error);
-          });
+          page.on('error', reject);
+          page.on('pageerror', reject);
 
           page.on('console', msg => {
             if (msg.type() === 'log') {
@@ -38,7 +28,6 @@ const puppeteer = require('puppeteer');
               resolve();
             } else {
               console.log('got msg', msg);
-             // resolve();
             }
           });
 
