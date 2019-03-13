@@ -1,5 +1,17 @@
-<script>
-window.NQP_END_EVENT = true;
-</script>
-<script src="bom.js"></script>
-Loading test
+<html>
+  <head>
+    <script>
+    window.NQP_END_EVENT = true;
+    window.runTest = function(file) {
+      const script = document.createElement("script");
+      script.setAttribute("type", "text/javascript");
+      script.setAttribute("src", file);
+      document.getElementsByTagName("head")[0].appendChild(script);
+    }
+    </script>
+  </head>
+
+  <body>
+    Loading test
+  </body>
+</html>
