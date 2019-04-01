@@ -1,0 +1,10 @@
+use v6;
+
+for qq:x[perl t/spec/fudgeall rakudo.js.browser {@*ARGS}].words -> $file {
+  my $fixed = 'mangled_spec'.IO.add($file.IO.relative($file.IO.parent.parent).subst(/.rakudo.js.browser$/, '.t'));
+
+  say('writing: ', $fixed);
+  mkdir($fixed.parent);
+
+  spurt($fixed, slurp($file).subst(rx/^^[' '*use \s* lib \s* (\N+)\;]/, {"### $0"}, :g));
+}
