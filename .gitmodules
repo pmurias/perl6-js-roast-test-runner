@@ -1,0 +1,3 @@
+[submodule "t/spec"]
+	path = t/spec
+	url = git@github.com:perl6/roast.git
