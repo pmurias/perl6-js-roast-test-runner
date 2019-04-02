@@ -3,13 +3,21 @@ const app = express();
 const port = 3000;
 
 const fs = require('fs');
+const path = require('path');
 
 app.use(express.static('static'));
-app.use(express.static('tests'));
+app.use(express.static('dist'));
 
 const server = app.listen(port, () => true);
-
 const puppeteer = require('puppeteer');
+
+
+function writeTap(testFile, tap) {
+  const outputPath = 'output/' + testFile.replace(/\.js$/, '.tap');
+  fs.mkdirSync(path.dirname(outputPath), {recursive: true});
+  fs.writeFileSync(outputPath, tap.join('\n'));
+}
+
 
 (async () => {
   const browser = await puppeteer.launch({headless: true});
@@ -52,7 +60,7 @@ const puppeteer = require('puppeteer');
           });
 
           page.on('domcontentloaded', () => {
-            page.evaluate(x => window.runTest(x), file.replace(/^tests\//, ''));
+            page.evaluate(x => window.runTest(x), file.replace(/^dist\//, ''));
           });
 
           await page.goto('http://localhost:3000/load_test.html');
@@ -73,14 +81,14 @@ const puppeteer = require('puppeteer');
     } catch (e) {
       tap.push(e.toString());
     }
-    fs.writeFileSync('output/' + file.replace('\.js', '.tap'), tap.join('\n'));
+    writeTap(file, tap);
   }
 
   console.log(process.argv);
 
   if (process.argv.length === 2) {
     try {
-      for (const test of fs.readdirSync('tests').filter(test => /.js$/.test(test))) {
+      for (const test of fs.readdirSync('dist').filter(test => /.js$/.test(test))) {
         await runTestAndWriteTap(test);
       }
     } catch (e) {
@@ -99,7 +107,7 @@ const puppeteer = require('puppeteer');
           console.log(e);
         }
 
-        fs.writeFileSync('output/' + test.replace('\.js', '.tap'), tap.join('\n'));
+        writeTap(test, tap);
       }
   }
 

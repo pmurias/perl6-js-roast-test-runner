@@ -4,6 +4,7 @@
   "description": "a super simple Perl 6 in browser example",
   "main": "index.js",
   "dependencies": {
+    "express": "^4.16.4",
     "karma": "^3.0.0",
     "karma-chrome-launcher": "^2.2.0",
     "parcel": "^1.11.0",
@@ -14,5 +15,8 @@
   "license": "Artistic-2.0",
   "browserslist": [
     "last 2 Chrome versions"
-  ]
+  ],
+  "devDependencies": {
+    "parcel-plugin-async-perl6": "0.0.1"
+  }
 }
