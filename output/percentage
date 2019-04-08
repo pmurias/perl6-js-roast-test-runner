@@ -1,0 +1,181 @@
+#!perl
+use TAP::DOM;
+use File::Slurp qw(slurp);
+use Term::ANSIColor qw(:constants);
+use v5.12;
+
+my $RED = -t STDOUT ? RED : '';
+my $GREEN = -t STDOUT ? GREEN : '';
+my $YELLOW = -t STDOUT ? YELLOW : '';
+my $RESET = -t STDOUT ? RESET : '';
+
+my @types = qw/S02-lexical-conventions
+S02-lists
+S02-literals
+S02-magicals
+S02-names
+S02-names-vars
+S02-one-pass-parsing
+S02-packages
+S02-types
+S03-binding
+S03-feeds
+S03-junctions
+S03-metaops
+S03-operators
+S03-sequence
+S03-smartmatch
+S04-blocks-and-statements
+S04-declarations
+S04-exception-handlers
+S04-exceptions
+S04-phasers
+S04-statement-modifiers
+S04-statement-parsing
+S04-statements
+S05-capture
+S05-grammar
+S05-interpolation
+S05-mass
+S05-match
+S05-metachars
+S05-metasyntax
+S05-modifier
+S05-nonstrings
+S05-substitution
+S05-syntactic-categories
+S05-transliteration
+S06-advanced
+S06-currying
+S06-macros
+S06-multi
+S06-operator-overloading
+S06-other
+S06-routine-modifiers
+S06-signature
+S06-traits
+S07-iterators
+S09-autovivification
+S09-hashes
+S09-subscript
+S09-typed-arrays
+S10-packages
+S11-modules
+S12-attributes
+S12-class
+S12-construction
+S12-enums
+S12-introspection
+S12-meta
+S12-methods
+S12-subset
+S12-traits
+S13-overloading
+S13-syntax
+S13-type-casting
+S14-roles
+S14-traits
+S32-array
+S32-basics
+S32-container
+S32-exceptions
+S32-hash
+S32-list
+S32-num
+S32-scalar
+S32-str
+S32-temporal
+S32-trig/;
+
+my %ran;
+my $all = 0;
+my %files;
+open(my $spectest, '<', '../t/spectest.data') or die "Can't open spectest.data";
+
+FILE_LOOP: while (<$spectest>) {
+  chomp;
+  next if /^#/ or !$_;
+  my ($file, $flag) = split(/ /, $_);
+  $file =~ s/\.t$//;
+  if ($all) {
+    $files{$file} = 1;
+  } else {
+    for my $type (@types) {
+      if ($file =~ /^$type/) {
+        $files{$file} = 1;
+        next FILE_LOOP;
+      }
+    }
+#    warn "ignoring $file";
+  }
+}
+
+my $spectests = scalar keys %files;
+say("ALL:", $spectests);
+say("RUN:", scalar keys %ran);
+
+my %precomp_bugs;
+open(my $precomp_bugs, '<', '../precomp_bugs') or die "Can't open precomp_bugs";
+
+while (<$precomp_bugs>) {
+  chomp($_);
+#  say("precomp: $_");
+  $precomp_bugs{$_} = 1;
+}
+
+sub colored_status {
+  my ($status) = @_;
+  my $color;
+  if ($status eq 'PASS') {
+    $color = $GREEN
+  } elsif ($status eq 'FAIL') {
+    $color = $RED;
+  } else {
+    $color = $YELLOW;
+  }
+
+  $color . $status . $RESET;
+}
+
+my $passed = 0;
+
+for my $file (@ARGV) {
+  my $name = $file;
+
+  $name =~ s/\.tap$//;
+  $name =~ s/___/\//;
+
+  $ran{$name} = 1;
+
+  next unless $files{$name};
+
+  my $tapdom;
+  eval {
+    $tapdom = TAP::DOM->new(tap => scalar slurp($file));
+  };
+  
+  my $status;
+  if ($@) {
+    $status = 'FAIL';
+  } else {
+    $status = $tapdom->summary->{status};
+  }
+
+  if ($precomp_bugs{$name} && $status eq 'FAIL') {
+    $status = 'PRECOMP BUG';
+  }
+
+  say("$name ", colored_status($status));
+  if ($status eq 'PASS') {
+    $passed++;
+  }
+}
+
+say "passed $passed tests";
+
+for my $file (keys %files) {
+  unless ($ran{$file} || $precomp_bugs{$file}) {
+   say "missing $file ", $precomp_bugs{$file};
+  }
+}
+
