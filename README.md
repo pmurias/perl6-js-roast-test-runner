@@ -1,6 +1,6 @@
 # Dependencies
 
-Needs an installed node (node.js) and perl6-m (Rakudo MoarVM) executables
+Needs an installed node (10.15.3 is tested to work) and perl6-m (any Rakudo MoarVM) executable
 
 # Instructions
 
