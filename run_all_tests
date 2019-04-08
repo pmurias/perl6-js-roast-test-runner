@@ -2,3 +2,4 @@
 perl6-m mangle_spec t/spec/S*/*.t
 perl6-m parcel_everything.p6 mangled_spec/S*/*.t
 node runTests.js
+perl results output/*.tap

@@ -8,6 +8,10 @@ S04-exceptions/exceptions-alternatives
 # env variable and exists makes no sense in the browser
 S02-magicals/78258
 S04-declarations/constant
+# broken due to a chrome bug
+S32-array/pop
+# broken because it uses a 'no precompilation'
+S06-multi/compile-time
 #########################
 # use at EVAL time 
 S12-meta/exporthow

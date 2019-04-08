@@ -90,7 +90,7 @@ S32-trig/;
 my %ran;
 my $all = 0;
 my %files;
-open(my $spectest, '<', '../t/spectest.data') or die "Can't open spectest.data";
+open(my $spectest, '<', 't/spectest.data') or die "Can't open spectest.data";
 
 FILE_LOOP: while (<$spectest>) {
   chomp;
@@ -114,13 +114,13 @@ my $spectests = scalar keys %files;
 say("ALL:", $spectests);
 say("RUN:", scalar keys %ran);
 
-my %precomp_bugs;
-open(my $precomp_bugs, '<', '../precomp_bugs') or die "Can't open precomp_bugs";
+my %broken;
+open(my $broken, '<', 'broken') or die "Can't open broken";
 
-while (<$precomp_bugs>) {
+while (<$broken>) {
   chomp($_);
 #  say("precomp: $_");
-  $precomp_bugs{$_} = 1;
+  $broken{$_} = 1;
 }
 
 sub colored_status {
@@ -144,6 +144,7 @@ for my $file (@ARGV) {
 
   $name =~ s/\.tap$//;
   $name =~ s/___/\//;
+  $name =~ s/output\///;
 
   $ran{$name} = 1;
 
@@ -161,7 +162,7 @@ for my $file (@ARGV) {
     $status = $tapdom->summary->{status};
   }
 
-  if ($precomp_bugs{$name} && $status eq 'FAIL') {
+  if ($broken{$name} && $status eq 'FAIL') {
     $status = 'PRECOMP BUG';
   }
 
@@ -174,8 +175,8 @@ for my $file (@ARGV) {
 say "passed $passed tests";
 
 for my $file (keys %files) {
-  unless ($ran{$file} || $precomp_bugs{$file}) {
-   say "missing $file ", $precomp_bugs{$file};
+  unless ($ran{$file} || $broken{$file}) {
+   say "missing $file ", $broken{$file};
   }
 }
 
