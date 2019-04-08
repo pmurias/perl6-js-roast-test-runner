@@ -14,4 +14,4 @@ To runs all tests
 
 To run one test
 
-    $ perl6-m run_one_test.p6 t/spec/S02-lexical-conventions/bom.t # this runs on test
+    $ perl6-m run_one_test.p6 t/spec/S02-lexical-conventions/bom.t
