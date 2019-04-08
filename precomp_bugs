@@ -1,0 +1,70 @@
+# MAIN stuff - it's off no use in the browser
+S06-other/main
+S06-other/main-semicolon
+S06-other/main-usage
+S10-packages/require-and-use
+S11-modules/runtime
+S04-exceptions/exceptions-alternatives
+# env variable and exists makes no sense in the browser
+S02-magicals/78258
+S04-declarations/constant
+#########################
+# use at EVAL time 
+S12-meta/exporthow
+# precompilation at browser runtime is not supported
+S10-packages/precompilation
+# use at EVAL time not supported
+S11-modules/nested
+# require at EVAL time and loading stuff and runtime is not supported
+S11-modules/require
+#########################
+S02-names/is_cached
+S03-junctions/autothreading
+S03-metaops/infix
+S03-metaops/hyper
+S12-enums/basic
+#########################
+S02-names-vars/signature
+S02-names/is_cached
+S02-types/bag
+S02-types/isDEPRECATED
+S02-types/num
+S02-types/pair
+S03-metaops/not
+S03-metaops/infix
+S03-operators/equality
+S03-operators/set_addition
+S03-operators/set_intersection
+S03-operators/set_multiply
+S03-operators/set_union
+S04-declarations/will
+S06-advanced/callsame
+S06-advanced/callframe
+S06-advanced/wrap
+S06-advanced/stub
+S06-macros/quasi-blocks
+S06-macros/opaque-ast
+S06-multi/redispatch
+S06-macros/unquoting
+S06-operator-overloading/circumfix
+S06-operator-overloading/infix
+S09-typed-arrays/arrays
+S12-attributes/delegation
+S12-enums/as-role
+S12-introspection/methods
+S12-methods/fallback
+S12-methods/multi
+S14-roles/composition
+S14-traits/routines
+S15-nfg/GraphemeBreakTest
+S15-nfg/concat-stable
+S29-conversions/ord_and_chr
+S32-io/IO-Socket-INET
+S32-list/classify-list
+S32-list/categorize-list
+S32-num/complex
+integration/99problems-41-to-50
+integration/advent2009-day17
+integration/advent2011-day04
+integration/advent2012-day23
+integration/packages
