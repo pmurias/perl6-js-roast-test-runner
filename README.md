@@ -4,6 +4,10 @@ Needs an installed node (10.15.3 is tested to work) and perl6-m (any Rakudo Moar
 
 # Instructions
 
+
+If you don't have submodules checked out
+    $ git submodule update --init
+
 First install
 
     $ npm install .
