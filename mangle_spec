@@ -6,5 +6,5 @@ for qq:x[perl t/spec/fudgeall rakudo.js.browser {@*ARGS}].words -> $file {
   say('writing: ', $fixed);
   mkdir($fixed.parent);
 
-  spurt($fixed, slurp($file).subst(rx/^^[' '*use \s* lib \s* (\N+)\;]/, {"### $0"}, :g));
+  spurt($fixed, slurp($file).subst(rx/^^[' '*use \s* lib \s* (\N+)\;]/, {"### USE LIB $0"}, :g));
 }
