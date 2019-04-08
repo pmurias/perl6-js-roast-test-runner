@@ -1,7 +1,0 @@
-Dependencies
-
-Needs an installed node (node.js) and perl6-m (Rakudo MoarVM) executables
-
-Instructions
-
-sh run_all_tests
